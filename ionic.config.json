@@ -1,5 +1,14 @@
 {
   "name": "tjc-tv",
-  "integrations": {},
-  "type": "ionic-angular"
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "movies",
+      "proxyUrl": "http://10.0.1.2:8080/movies"
+    }
+  ]
 }
+

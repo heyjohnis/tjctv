@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, ModalController, NavController } from 'ionic-angular';
 
-import { Item } from '../../models/item';
-import { Items } from '../../providers';
+import { Movies } from '../../providers';
 
 @IonicPage()
 @Component({
@@ -10,27 +9,35 @@ import { Items } from '../../providers';
   templateUrl: 'list-master.html'
 })
 export class ListMasterPage {
-  currentItems: Item[];
+  public items: any;
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController) {
-    this.currentItems = this.items.query();
+  constructor(public navCtrl: NavController, public movies: Movies, public modalCtrl: ModalController) {
   }
 
-  /**
-   * The view loaded, let's query our items for the list
-   */
-  ionViewDidLoad() {
+
+  ionViewDidLoad(){
+    this.movies.movieList("cate").subscribe((resp) => {
+      console.log('서버접속이 성공');
+      console.log(resp);
+      this.items = resp;
+    }, (err) => {
+      console.log('서버접속이 실패됨');
+      console.log(err);
+    });
   }
 
-  /**
-   * Prompt the user to add a new item. This shows our ItemCreatePage in a
-   * modal and then adds the new item to our data source if the user created one.
-   */
+  openItem(_item: any) {
+    console.log(_item);
+    this.navCtrl.push('ItemDetailPage', {
+      item: _item
+    });
+  }
+
   addItem() {
     let addModal = this.modalCtrl.create('ItemCreatePage');
     addModal.onDidDismiss(item => {
       if (item) {
-        this.items.add(item);
+        //this.items.add(item);
       }
     })
     addModal.present();
@@ -40,15 +47,31 @@ export class ListMasterPage {
    * Delete an item from the list of items.
    */
   deleteItem(item) {
-    this.items.delete(item);
+    //this.items.delete(item);
   }
 
   /**
    * Navigate to the detail page for this item.
    */
-  openItem(item: Item) {
-    this.navCtrl.push('ItemDetailPage', {
-      item: item
-    });
+
+
+  // ionViewDidLoad(){
+  //   this.serverProvider.get('/movies').then((response:any)=>{
+  //       console.log(response);
+  //       this.items=response;
+  //   },(err)=>{
+  //       console.log('서버접속이 실패됨');
+  //   });
+  // }
+
+
+
+
+  makeFile(file){
+    let img_size = "-66x66";
+    let file_nm: string = file.replace(".jpg", img_size+".jpg").replace(".png", img_size+".png").replace(".jpeg",img_size+".jpeg" );
+    return file_nm
   }
+
+
 }

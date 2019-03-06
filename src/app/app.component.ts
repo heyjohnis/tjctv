@@ -28,6 +28,7 @@ import { Settings } from '../providers';
 })
 export class MyApp {
   rootPage = FirstRunPage;
+  //rootPage = MainPage;
 
   @ViewChild(Nav) nav: Nav;
 

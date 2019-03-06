@@ -9,9 +9,11 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
-import { Items } from '../mocks/providers/items';
-import { Settings, User, Api } from '../providers';
+//import { Items } from '../mocks/providers/items';
+import { Settings, User, Api, Movies } from '../providers';
 import { MyApp } from './app.component';
+
+import { ServerProvider } from '../providers/server/server'
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
@@ -41,6 +43,7 @@ export function provideSettings(storage: Storage) {
   imports: [
     BrowserModule,
     HttpClientModule,
+    
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -57,14 +60,18 @@ export function provideSettings(storage: Storage) {
   ],
   providers: [
     Api,
-    Items,
+    //Items,
     User,
     Camera,
     SplashScreen,
     StatusBar,
+    ServerProvider,
+    Movies,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }
+
+
   ]
 })
 export class AppModule { }
